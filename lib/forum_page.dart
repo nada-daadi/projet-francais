@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'add_forum_post_page.dart'; // Import the new page
+import 'dart:ui'; // For ImageFilter.blur
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
@@ -25,8 +26,14 @@ class _ForumPageState extends State<ForumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forum Citoyen'),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          'Forum Citoyen',
+          style: TextStyle(color: Colors.white), // Text color in white
+        ),
+        backgroundColor: const Color(0xFF093B56), // Green color for the app bar
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Add icon in white
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -43,26 +50,39 @@ class _ForumPageState extends State<ForumPage> {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/background.jpeg'), // Same background as before
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.jpeg'), // Background image path
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: _posts.length,
-            itemBuilder: (context, index) {
-              return _buildPostCard(
-                _posts[index]['title']!,
-                _posts[index]['content']!,
-                context,
-              );
-            },
+          // Blur effect
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1), // Blur intensity
+            child: Container(
+              color: Colors.black.withOpacity(0.2), // Slight dark overlay to enhance readability
+            ),
           ),
-        ),
+          // Main content
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: _posts.length,
+              itemBuilder: (context, index) {
+                return _buildPostCard(
+                  _posts[index]['title']!,
+                  _posts[index]['content']!,
+                  context,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -78,7 +98,7 @@ class _ForumPageState extends State<ForumPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
-            colors: [Colors.teal.shade100, Colors.teal.shade300],
+            colors: [const Color(0xFF3EA928).withOpacity(0.3), const Color(0xFF093B56)], // Gradient with green and blue
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -93,15 +113,15 @@ class _ForumPageState extends State<ForumPage> {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: Colors.white, // Text color in white
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 content,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade700,
+                  color: Colors.white70, // Light white for content
                 ),
               ),
               const SizedBox(height: 12),
@@ -112,12 +132,12 @@ class _ForumPageState extends State<ForumPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal, // Replaced 'primary' with 'backgroundColor'
+                  backgroundColor: Colors.white, // Button background color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Commenter'),
+                child: const Text('Commenter', style: TextStyle(color: Colors.black)), // Text in black
               ),
             ],
           ),

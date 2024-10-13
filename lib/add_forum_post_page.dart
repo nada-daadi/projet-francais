@@ -32,8 +32,12 @@ class _AddForumPostPageState extends State<AddForumPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ajouter un Post'),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          'Ajouter un Post',
+          style: TextStyle(color: Colors.white), // White text
+        ),
+        backgroundColor: const Color(0xFF093B56),
+        iconTheme: const IconThemeData(color: Colors.white),// White back icon
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,6 +47,7 @@ class _AddForumPostPageState extends State<AddForumPostPage> {
               controller: _titleController,
               decoration: const InputDecoration(
                 labelText: 'Titre',
+                labelStyle: TextStyle(color: Color(0xFF093B56)),
               ),
             ),
             const SizedBox(height: 16),
@@ -50,13 +55,23 @@ class _AddForumPostPageState extends State<AddForumPostPage> {
               controller: _contentController,
               decoration: const InputDecoration(
                 labelText: 'Contenu',
+                labelStyle: TextStyle(color: Color(0xFF093B56)),
               ),
               maxLines: 5,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submitPost,
-              child: const Text('Ajouter Post'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF093B56), // Blue button background color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                'Ajouter Post',
+                style: TextStyle(color: Colors.white), // White text on button
+              ),
             ),
           ],
         ),

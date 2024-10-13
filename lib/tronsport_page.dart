@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui'; // For ImageFilter.blur
 
 // ignore: use_key_in_widget_constructors
 class TransportPage extends StatelessWidget {
@@ -14,26 +15,42 @@ class TransportPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Suivi des Transports',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, color: Colors.white), // Text color in white
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFF093B56), // Green color for the app bar
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Back icon color in white
+        ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/background.jpeg'), // Use the same background image
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: transports.length,
-            itemBuilder: (context, index) {
-              return _buildTransportCard(transports[index], context);
-            },
+          // Blur effect
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1), // Adjust the blur intensity
+            child: Container(
+              color: Colors.black.withOpacity(0.2), // Add a slight dark overlay
+            ),
           ),
-        ),
+          // Main content
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: transports.length,
+              itemBuilder: (context, index) {
+                return _buildTransportCard(transports[index], context);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -49,7 +66,7 @@ class TransportPage extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
-            colors: [Colors.teal.shade100, Colors.teal.shade300],
+            colors: [const Color(0xFF3EA928).withOpacity(0.3), const Color(0xFF093B56)], // Gradient with green and blue
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -61,7 +78,7 @@ class TransportPage extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.directions_bus, color: Colors.teal, size: 40), // Transport Icon
+                  const Icon(Icons.directions_bus, color: Colors.white, size: 40), // Transport Icon in white
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,15 +88,15 @@ class TransportPage extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.teal,
+                          color: Colors.white, // Text color in white for better contrast
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Statut: ${transport['status']}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
-                          color: Colors.grey.shade700,
+                          color: Colors.white70, // Light white color for the status text
                         ),
                       ),
                     ],
@@ -91,7 +108,7 @@ class TransportPage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: Colors.white, // Arrival time in white
                 ),
               ),
             ],

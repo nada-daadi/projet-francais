@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui'; // For ImageFilter.blur
 
 class PublicServicesPage extends StatelessWidget {
   const PublicServicesPage({super.key});
@@ -6,29 +7,43 @@ class PublicServicesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Adding the same background as HomePage
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/background.jpeg'), // Background image
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Background image with blur effect
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1), // Blurred background
+              child: Container(
+                color: Colors.black.withOpacity(0.2), // Dark overlay to enhance text visibility
+              ),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: [
-              const SizedBox(height: 80), // Top padding for better visibility
-              _buildServiceCard('Carte d’Identité', context),
-              _buildServiceCard('Permis de Conduire', context),
-              _buildServiceCard('Certificat de Naissance', context),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                const SizedBox(height: 80), // Top padding for better visibility
+                _buildServiceCard('Carte d’Identité', context),
+                _buildServiceCard('Permis de Conduire', context),
+                _buildServiceCard('Certificat de Naissance', context),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
       appBar: AppBar(
-        title: const Text('Demandes de Documents'),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          'Demandes de Documents',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF093B56), // Green background color
+        iconTheme: const IconThemeData(color: Colors.white), // White back icon
         elevation: 0,
       ),
     );
@@ -45,7 +60,7 @@ class PublicServicesPage extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
-            colors: [Colors.teal.shade100, Colors.teal.shade300],
+            colors: [const Color(0xFF3EA928).withOpacity(0.3), const Color(0xFF093B56)], // Gradient with green and blue
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -55,7 +70,6 @@ class PublicServicesPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Wrap text content in an Expanded widget
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +79,7 @@ class PublicServicesPage extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.teal,
+                        color: Colors.white, // White text
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -73,15 +87,15 @@ class PublicServicesPage extends StatelessWidget {
                       'Cliquez pour demander votre $title',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade700,
+                        color: Colors.white, // Lighter text for description
                       ),
-                      overflow: TextOverflow.ellipsis, // Avoid overflow of text
-                      maxLines: 2, // Limit text to 2 lines
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8), // Add some space between text and button
+              const SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -89,12 +103,11 @@ class PublicServicesPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal.shade800,
+                  backgroundColor: Colors.white, // Button background color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                // Change button text to black
                 child: const Text(
                   'Demander',
                   style: TextStyle(color: Colors.black), // Text in black
